@@ -1,0 +1,34 @@
+[project]
+name = "qiflib"
+dynamic = ["version"] # tell PEP 621 that “version” is supplied later
+description = "A tiny, focused Python library for Quantitative Information Flow (QIF): model secrets, channels, and analyze leakage via the g-vulnerability framework."
+authors = [{name="Ramon Gonçalves Gonze", email="ramongonze@gmail.com"}]
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+dependencies = [
+    "numpy>=1.21.5"
+]
+
+[project.urls]
+Documentation = "https://qiflib.readthedocs.io/"
+Repository = "https://github.com/ramongonze/qiflib.git"
+Issues = "https://github.com/ramongonze/qiflib/issues"
+
+[build-system]
+requires = ["setuptools>=68.0.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.package-dir] # tell setuptools I'am using a src layout
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = ["src"] # look in src/
+
+[tool.setuptools.dynamic]
+version = {attr = "qiflib.__version__"}
