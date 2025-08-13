@@ -1,47 +1,47 @@
 """QIF channels."""
 
-from libqif.core.secrets import Secrets
-from libqif.util.probability import check_prob_distribution
-from libqif.util.types import is_list, is_2d_list_matrix, is_2d_numpy_matrix
+from qiflib.core.secrets import Secrets
+from qiflib.util.probability import check_prob_distribution
+from qiflib.util.types import is_list, is_2d_list_matrix, is_2d_numpy_matrix
 from numpy import arange, array
 
 class Channel:
+    """Class used to represent a channel. To create an instance of this 
+    class it is necessary to have an instance of :py:class:`.Secrets` class
+    and a channel matrix C :math:`n{\\times}m` where :math:`n` is the number
+    of secrets, :math:`m` is the number of outputs in the channel and
+    :code:`C[x][y]` is the conditional probability :math:`p(y|x)` of the
+    channel outputs :math:`y` when the value of the secret is :math:`x`.
 
+    Parameters
+    ----------
+    secrets : core.Secrets
+        Secrets object.
+
+    outputs : list
+        Outputs labels.
+
+    channel : numpy.ndarray
+        Channel matrix. Each line must be a probability distribution.
+
+    Attributes
+    ----------
+    secrets : core.Secrets
+        Set of secrets.
+
+    outputs : list
+        List of channel outputs labels.
+
+    num_ouputs : int
+        Number of outputs in the channel.
+
+    matrix : list, numpy.ndarray
+        Channel matrix where :code:`C[x][y]` is the conditional probability
+        :math:`p(y|x)` of the channel outputs :math:`y` when the value of
+        the secret is :math:`x`.
+    """
+    
     def __init__(self, secrets, outputs, channel):
-        """Class used to represent a channel. To create an instance of this 
-        class it is necessary to have an instance of :py:class:`.Secrets` class
-        and a channel matrix C :math:`n{\\times}m` where :math:`n` is the number
-        of secrets, :math:`m` is the number of outputs in the channel and
-        :code:`C[x][y]` is the conditional probability :math:`p(y|x)` of the
-        channel outputs :math:`y` when the value of the secret is :math:`x`.
-
-        Attributes
-        ----------
-        secrets : core.Secrets
-            Set of secrets.
-
-        outputs : list
-            List of channel outputs labels.
-
-        num_ouputs : int
-            Number of outputs in the channel.
-
-        matrix : list, numpy.ndarray
-            Channel matrix where :code:`C[x][y]` is the conditional probability
-            :math:`p(y|x)` of the channel outputs :math:`y` when the value of
-            the secret is :math:`x`.
-
-        Parameters
-        ----------
-        secrets : core.Secrets
-            Secrets object.
-
-        outputs : list
-            Outputs labels.
-
-        channel : numpy.ndarray
-            Channel matrix. Each line must be a probability distribution.
-        """
         self._check_types(secrets, outputs, channel)
         self._check_sizes(secrets, outputs, channel)
         self._check_channel_matrix(channel)

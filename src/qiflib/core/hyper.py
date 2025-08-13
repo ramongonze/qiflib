@@ -6,38 +6,38 @@ from numpy import array, arange, zeros
 from numpy import delete as npdelete
 
 class Hyper:
+    """Hyper-distribution. To create an instance of this class it is
+    class it is necessary to have an instance of :py:class:`.Channel`
+    class. Once created an instance of :py:class:`.Hyper`, the constructor
+    generates the joint, outer and inner distributions.
+
+    Parameters
+    ----------
+    channel : core.Channel
+        Channel object.
+
+    Attributes
+    ----------
+    channel : core.Channel
+        Channel object. 
+    
+    joint : numpy.ndarray
+        Matrix of joint distribution.
+
+    outer : numpy.ndarray
+        Outer distribution.
+
+    inners : numpy.ndarray
+        Matrix of inner distributions. 
+
+    num_posteriors : int
+        Number of posterior distributions resulted by reducing the
+        hyper-distribution, i.e., remove columns that contains only
+        zeros and merge columns which one of them a linear combination
+        of the other.
+    """
 
     def __init__(self, channel):
-        """Hyper-distribution. To create an instance of this class it is
-        class it is necessary to have an instance of :py:class:`.Channel`
-        class. Once created an instance of :py:class:`.Hyper`, the constructor
-        generates the joint, outer and inner distributions.
-
-        Attributes
-        ----------
-        channel : core.Channel
-            Channel object. 
-        
-        joint : numpy.ndarray
-            Matrix of joint distribution.
-
-        outer : numpy.ndarray
-            Outer distribution.
-
-        inners : numpy.ndarray
-            Matrix of inner distributions. 
-
-        num_posteriors : int
-            Number of posterior distributions resulted by reducing the
-            hyper-distribution, i.e., remove columns that contains only
-            zeros and merge columns which one of them a linear combination
-            of the other.
-
-        Parameters
-        ----------
-        channel : core.Channel
-            Channel object.
-        """
         self._check_types(channel)
         self.channel = channel
         self.joint = self._generate_joint_distribution()

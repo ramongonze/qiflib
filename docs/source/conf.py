@@ -12,12 +12,9 @@ sys.path.insert(0, SRC)
 project = "qiflib"
 author = "Ramon Gonçalves Gonze"
 copyright = f"{datetime.now():%Y}, {author}"
-# If you keep a __version__ in qiflib/__init__.py, you can import it:
-try:
-    from qiflib import __version__ as version
-except Exception:
-    version = ""
-release = version
+
+from importlib.metadata import version as pkg_version
+release = pkg_version("qiflib")
 
 # -- General configuration --------------------------------------------------
 extensions = [
@@ -30,24 +27,25 @@ extensions = [
     "myst_parser",                    # optional: Markdown support
 ]
 autosummary_generate = True
-autodoc_typehints = "description"     # cleaner signatures
 
-# Napoleon settings for Google/NumPy-style docstrings
-napoleon_google_docstring = True
-napoleon_numpy_docstring = True
-napoleon_use_param = True
-napoleon_use_rtype = True
-napoleon_use_ivar = True           # allow "Attributes:" / :ivar: to become attributes
-napoleon_attr_annotations = True
+myst_enable_extensions = [
+    "dollarmath",      # <-- enables $ and $$ math blocks
+    "amsmath",         # optional, for more LaTeX environments
+    "colon_fence",
+    "deflist",
+    "html_admonition",
+    "html_image",
+    "replacements",
+    "smartquotes",
+    "substitution",
+    "tasklist",
+]
 
 # Nice display of type hints
 autodoc_typehints = "description"   # or "both"
 
 templates_path = ["_templates"]
-exclude_patterns = []
-
-# MyST (Markdown) tweaks (optional)
-myst_enable_extensions = ["colon_fence", "deflist"]
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # Intersphinx (optional)
 intersphinx_mapping = {
@@ -55,12 +53,8 @@ intersphinx_mapping = {
 }
 
 # -- HTML output ------------------------------------------------------------
+import sphinx_rtd_theme
 html_theme = "sphinx_rtd_theme"
-html_static_path = ["_static"]
-html_theme_options = {
-    "collapse_navigation": False,
-    "navigation_depth": 4,
-}
 
 # Optional: if you have modules that are heavy to import, mock them
 autodoc_mock_imports = ["numpy"]

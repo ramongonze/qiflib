@@ -6,51 +6,50 @@ from numpy import arange, zeros, array
 from numpy import min as npmin
 
 class LUncertainty:
+    """:math:`\ell`-uncertainty. To create an instance of this class it is necessary 
+    to have an instance of :py:class:`.Secrets` class and a loss function, 
+    that can be a matrix or a pointer to a function. The matrix G must be 
+    G :math:`w{\\times}n` where :math:`w` is the number of actions, :math:`n` is the 
+    number of secrets and :code:`G[w][x]` is the adversary's loss when she takes the action 
+    :code:`w` and the secret's value is :code:`x`. The function must have 
+    two input parameters (action w and secret x, in this order) and outputs a real value.
+
+    Parameters
+    ----------
+    secrets : core.Secrets
+        Set of secrets.
+
+    actions : list
+        Set of actions.
+
+    lfunction : list, numpy.ndarray, pointer to a function
+        A 2d matrix or a pointer to a loss function.
+        If the value is a matrix, its shape must match with the actions
+        and secrets sets size.
+        If the value is a pointer to a function, the function must have
+        2 input parameters (w,x), where w is the index of an element from
+        the set of actions and x is an index of an element from the set
+        of secrets.
+
+    Attributes
+    ----------
+    secrets : core.Secrets
+        Secrets object.
+
+    actions : list
+        List of actions' labels.
+
+    num_actions : int
+        Number of actions.
+
+    matrix : numpy.ndarray
+        Loss function matrix. :code:`loss[w][x]` is the adversary's loss
+        when she takes the action of index :code:`w` (that has the
+        label :code:`actions[w]`) and the secret is the one from index
+        :code:`x` (and has the label :code:`secrets.labels[x]`).
+    """
 
     def __init__(self, secrets, actions, lfunction):
-        """:math:`\ell`-uncertainty. To create an instance of this class it is necessary 
-        to have an instance of :py:class:`.Secrets` class and a loss function, 
-        that can be a matrix or a pointer to a function. The matrix G must be 
-        G :math:`w{\\times}n` where :math:`w` is the number of actions, :math:`n` is the 
-        number of secrets and :code:`G[w][x]` is the adversary's loss when she takes the action 
-        :code:`w` and the secret's value is :code:`x`. The function must have 
-        two input parameters (action w and secret x, in this order) and outputs a real value.
-
-        Attributes
-        ----------
-        secrets : core.Secrets
-            Secrets object.
-
-        actions : list
-            List of actions' labels.
-
-        num_actions : int
-            Number of actions.
-
-        matrix : numpy.ndarray
-            Loss function matrix. :code:`loss[w][x]` is the adversary's loss
-            when she takes the action of index :code:`w` (that has the
-            label :code:`actions[w]`) and the secret is the one from index
-            :code:`x` (and has the label :code:`secrets.labels[x]`).
-
-        Parameters
-        ----------
-        secrets : core.Secrets
-            Set of secrets.
-
-        actions : list
-            Set of actions.
-
-        lfunction : list, numpy.ndarray, pointer to a function
-            A 2d matrix or a pointer to a loss function.
-            If the value is a matrix, its shape must match with the actions
-            and secrets sets size.
-            If the value is a pointer to a function, the function must have
-            2 input parameters (w,x), where w is the index of an element from
-            the set of actions and x is an index of an element from the set
-            of secrets.
-        """
-
         self._check_types(secrets, actions, lfunction)
         self._check_sizes(secrets, actions, lfunction)
         self.secrets = secrets
