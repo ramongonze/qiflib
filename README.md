@@ -3,6 +3,9 @@ It provides a clean, composable set of primitives — *secrets*, *channels*, *hy
 
 For more details see the book [The Science of Quantitative Information Flow](https://link.springer.com/book/10.1007/978-3-319-96131-6).
 
+## Documentation
+The documentation is available at [https://pypi.org/project/qiflib/](https://pypi.org/project/qiflib/).
+
 ## Features
 - **Secrets Modeling** — define hidden states with flexible prior distributions.
 - **Channels** — represent probabilistic mappings $p(y\mid x)$ from secrets to observations.
