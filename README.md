@@ -1,11 +1,27 @@
-## QIF Library
-A tiny, focused Python library for Quantitative Information Flow (QIF): model secrets, channels, and analyze leakage via the g-vulnerability framework.
+**QIFLib** is a Python library for modeling, analyzing, and quantifying information leakage in probabilistic systems using the **Quantitative Information Flow (QIF)** framework.  
+It provides a clean, composable set of primitives — *secrets*, *channels*, *hyper-distributions*, *vulnerability* and *uncertainty* functions — so you can build end-to-end analyses of how much information an adversary could learn.
+
+For more details see the book [The Science of Quantitative Information Flow](https://link.springer.com/book/10.1007/978-3-319-96131-6).
 
 ## Features
-- Secrets (priors over hidden states)
-- Channels (stochastic matrices from secrets to observables)
-- Hypers (Distribution on distribution on secrets)
-- g-Vulnerability (generalized adversary gain) and related leakage quantities
+- **Secrets Modeling** — define hidden states with flexible prior distributions.
+- **Channels** — represent probabilistic mappings $p(y\mid x)$ from secrets to observations.
+- **Hyper-distributions** — automatically compute joint $p(x,y)$, outer $p(y)$, and inners $p(x\mid y)$.
+- **Vulnerability Analysis** — use $g$-vulnerability to quantify an adversary’s expected gain before and after observing outputs.
+- **Uncertainty Analysis** — use $\ell$-uncertainty to measure the expected loss under optimal strategies.
+- **Leakage Metrics** — compute additive and multiplicative leakage.
+- **Flexible Functions** — provide gain/loss as matrices or Python callables.
+
+Why QIF?
+--------
+
+Traditional security analysis asks whether a secret *can* be inferred. QIF quantifies **how much** an adversary is expected to learn, under probabilistic models of system behavior and strategies.  
+Useful for:
+
+- privacy-preserving data publishing,
+- side-channel analysis,
+- communication protocol evaluation,
+- decision-making under uncertainty.
 
 ## Installation
 You can install via PyPI:
@@ -30,56 +46,34 @@ python -m unittest discover tests
 ## Example
 
 ```python
-from libqif.core.secrets import Secrets
-from libqif.core.channel import Channel
-from libqif.core.hyper import Hyper
-from libqif.core.gvulnerability import GVulnerability
-import numpy as np
+from qiflib.core.secrets import Secrets
+from qiflib.core.channel import Channel
+from qiflib.core.hyper import Hyper
+from qiflib.core.gvulnerability import GVulnerability
 
-secrets = Secrets(['x1','x2','x3','x4'], [1/3, 1/3, 0, 1/3])
-channel = Channel(secrets, ['y1','y2','y3','y4'], np.array([
-   [1/2, 1/6, 1/3,   0],
-   [  0, 1/3, 2/3,   0],
-   [  0, 1/2,   0, 1/2],
-   [1/4, 1/4, 1/2,   0]
-]))
+# Secrets & prior
+secrets = Secrets(["x0", "x1"], [0.6, 0.4])
+
+# Channel matrix: rows sum to 1
+outputs = ["y0", "y1"]
+C = [
+      [0.8, 0.2],  # p(y|x0)
+      [0.1, 0.9],  # p(y|x1)
+]
+channel = Channel(secrets, outputs, C)
+
+# Hyper-distribution
 hyper = Hyper(channel)
-gain = GVulnerability(secrets, ['w1','w2','w3','w4'], np.identity(4)) # Bayes vulnerability
 
-print('Prior distribution: ' + str(secrets.prior))
-print('Channel:\n' + str(channel.matrix))
-print('\nOuter distribution: ' + str(hyper.outer))
-print('Inner distributions:\n' + str(hyper.inners))
-print('\nPrior Bayes vulnerability: ' + str(gain.prior_vulnerability()))
-print('Posterior Bayes vulnerability: ' + str(gain.posterior_vulnerability(hyper)))
+# Gain function (1 if correct guess, else 0)
+actions = ["guess_x0", "guess_x1"]
+def gfun(w, x): return 1.0 if w == x else 0.0
+
+g = GVulnerability(secrets, actions, gfun)
+
+print("Prior vulnerability:", g.prior_vulnerability())
+print("Posterior vulnerability:", g.posterior_vulnerability(hyper))
 ```
-
-Output
-```bash
-Prior distribution: [0.33333333 0.33333333 0.         0.33333333]
-Channel:
-[[0.5        0.16666667 0.33333333 0.        ]
-[0.         0.33333333 0.66666667 0.        ]
-[0.         0.5        0.         0.5       ]
-[0.25       0.25       0.5        0.        ]]
-
-Outer distribution: [0.25 0.75]   
-Inner distributions:
-[[0.66666667 0.22222222]
-[0.         0.44444444]
-[0.         0.        ]
-[0.33333333 0.33333333]]
-
-Prior Bayes vulnerability: 0.3333333333333333
-Posterior Bayes vulnerability: 0.5
-```
-
-## References
-*Alvim, Mário S., Konstantinos Chatzikokolakis, Annabelle McIver,
-Carroll Morgan, Catuscia Palamidessi, and Geoffrey Smith.
-The Science of Quantitative Information Flow. Springer International
-Publishing, 2020.*
-
 
 ## License
 

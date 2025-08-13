@@ -4,6 +4,10 @@ Quantitative Information Flow Library
 **QIFLib** is a Python library for modeling, analyzing, and quantifying information leakage in probabilistic systems using the **Quantitative Information Flow (QIF)** framework.  
 It provides a clean, composable set of primitives — *secrets*, *channels*, *hyper-distributions*, *vulnerability* and *uncertainty* functions — so you can build end-to-end analyses of how much information an adversary could learn.
 
+For more details see the book `The Science of Quantitative Information Flow <https://link.springer.com/book/10.1007/978-3-319-96131-6>`_.
+
+
+
 .. tip::
 
    **New here? Start with the tutorial:** :doc:`Getting Started <getting-started>`
@@ -29,6 +33,28 @@ Useful for:
 - side-channel analysis,
 - communication protocol evaluation,
 - decision-making under uncertainty.
+
+Installation
+------------
+
+You can install via PyPI:
+
+.. code-block:: bash
+
+   pip install qiflib
+
+or manuallly by copying the `GitHub repository <https://github.com/ramongonze/qiflib>`_ to your local machine and running:
+
+.. code-block:: bash
+
+   pip install path/to/qiflib   
+
+To verify if the package was installed correctly, you can run tests:
+
+.. code-block:: bash
+   
+   cd path/to/qiflib
+   python -m unittest discover tests
 
 Quick Example
 -------------
