@@ -1,6 +1,6 @@
-from libqif.core.secrets import Secrets
-from libqif.core.channel import Channel
-from libqif.core.hyper import Hyper
+from qiflib.core.secrets import Secrets
+from qiflib.core.channel import Channel
+from qiflib.core.hyper import Hyper
 import numpy as np
 import unittest
 import os
