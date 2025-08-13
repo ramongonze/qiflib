@@ -2,7 +2,6 @@ from qiflib.core.secrets import Secrets
 from qiflib.core.channel import Channel
 import numpy as np
 import unittest
-import os
 
 class TestChannel(unittest.TestCase):
     def setUp(self):

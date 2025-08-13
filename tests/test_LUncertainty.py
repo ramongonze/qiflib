@@ -4,7 +4,6 @@ from qiflib.core.hyper import Hyper
 from qiflib.core.luncertainty import LUncertainty
 import numpy as np
 import unittest
-import os
 
 class TestLUncertainty(unittest.TestCase):
     def setUp(self):

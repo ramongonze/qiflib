@@ -3,7 +3,6 @@ from qiflib.core.channel import Channel
 from qiflib.core.hyper import Hyper
 import numpy as np
 import unittest
-import os
 
 class TestHyper(unittest.TestCase):
     def setUp(self):

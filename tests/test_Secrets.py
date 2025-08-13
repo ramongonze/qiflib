@@ -1,7 +1,6 @@
 from qiflib.core.secrets import Secrets
 import numpy as np
 import unittest
-import os
 
 class TestSecrets(unittest.TestCase):
     def setUp(self):
