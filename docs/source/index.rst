@@ -12,8 +12,8 @@ For more details see the book `The Science of Quantitative Information Flow <htt
 
    **New here? Start with the tutorial:** :doc:`Getting Started <getting-started>`
 
-Key Features
-------------
+Features
+--------
 
 - **Secrets Modeling** — define hidden states with flexible prior distributions.
 - **Channels** — represent probabilistic mappings :math:`p(y\mid x)` from secrets to observations.
